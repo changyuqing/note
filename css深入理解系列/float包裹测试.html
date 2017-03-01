@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+
+
+		#outofnormal {
+			float: left;
+			width: 200px;
+			background-color: cyan;
+			padding: 10px;
+		}
+		body > p{
+			margin: 10px ;
+			
+			background-color: skyblue;
+		}
+
+		.container:after{
+			content: ""; display: block; height: 0; clear: both; visibility: hidden;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<!-- 包裹测试 
+		<a href="javascript:void(0);" class="btn1"><p>inline-block方法</p></a>-->
+		
+		<!-- 破坏测试，脱离文档流以及absolute -->
+		<div id="outofnormal">
+			Out of normal: 
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi esse impedit autem praesentium magni culpa, amet corporis, veniam consequatur voluptates temporibus. Voluptates eius similique asperiores cupiditate fugit hic atque quisquam?
+		</div>
+		<h2>Normal Content</h2>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum praesentium nam tempora beatae quis nobis laboriosam alias aliquid, tenetur exercitationem. Odio, aperiam, illo! Eveniet natus dignissimos architecto velit eligendi id!</p>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem reprehenderit velit nam delectus distinctio at unde aliquid officia illo, tempore vitae et incidunt non, ut eos nesciunt quaerat. Enim, minus.</p>
+
+	</div>
+</body>
+</html>

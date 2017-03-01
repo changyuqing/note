@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>三栏式布局</title>
+	<style>
+		*{
+			margin: 0px;
+			border: 0px;
+			padding: 0px;
+			text-align: left;
+		}
+
+		.left{
+			background-color: green;
+			width: 160px;
+			height: 500px;
+			float: left;
+			margin-right: 20px;
+		}
+
+		.right{
+			
+			width: 160px;
+			height: 500px;
+			float: right;
+			background: yellow;
+			margin-left: 20px; 
+		}
+
+		.content{
+			display: table-cell;/*触发BFC*/
+			background: white;
+			padding: 20px;
+		}
+		p{
+			margin-top: 20px;
+		}
+		.clearfix {/* 触发 hasLayout */ zoom: 1; }
+		.clearfix:after {content: ""; display: block; height: 0; clear: both; visibility: hidden; }
+	</style>
+</head>
+<body>
+
+	<textarea class="left">
+	</textarea>
+	<textarea class="right">
+	</textarea>
+	<div class="content">
+		<h1>两侧自适应三栏式布局</h1>
+		<p>左右设置浮动，中间元素BFC化达到不影响两边浮动元素的效果，从而实现自适应，拖拽左右两边的textarea的右下角设置宽度查看自适应效果</p>
+		<p>左右设置浮动，中间元素BFC化达到不影响两边浮动元素的效果，从而实现自适应，拖拽左右两边的textarea的右下角设置宽度查看自适应效果</p>
+		<p>左右设置浮动，中间元素BFC化达到不影响两边浮动元素的效果，从而实现自适应，拖拽左右两边的textarea的右下角设置宽度查看自适应效果</p>
+		<p>左右设置浮动，中间元素BFC化达到不影响两边浮动元素的效果，从而实现自适应，拖拽左右两边的textarea的右下角设置宽度查看自适应效果</p>
+		<p>左右设置浮动，中间元素BFC化达到不影响两边浮动元素的效果，从而实现自适应，拖拽左右两边的textarea的右下角设置宽度查看自适应效果</p>
+		<p>左右设置浮动，中间元素BFC化达到不影响两边浮动元素的效果，从而实现自适应，拖拽左右两边的textarea的右下角设置宽度查看自适应效果</p>
+		<p>左右设置浮动，中间元素BFC化达到不影响两边浮动元素的效果，从而实现自适应，拖拽左右两边的textarea的右下角设置宽度查看自适应效果</p>
+		<p>左右设置浮动，中间元素BFC化达到不影响两边浮动元素的效果，从而实现自适应，拖拽左右两边的textarea的右下角设置宽度查看自适应效果</p>
+	</div>
+</body>
+</html>
