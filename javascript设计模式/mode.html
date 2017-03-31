@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div id="test">where would you wanna go?</div>
+    <!--<script>
+        //完整的面向对象封装
+        //利用闭包
+        var Book = (function(){
+            //类静态私有变量——private static
+            var bookNum = 0;
+            //类静态私有方法
+            function checkBook(name){
+
+            }
+            //创建类,构造函数
+            function _book(newId, newName, newPrice) {
+                //实例私有变量——private variable
+                var id,name;
+                //实例私有方法——private variable  
+                function checkId(id){
+                    if (id.length && id.length > 6) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                //特权方法，可以访问到实例私有变量
+                this.setName = function(newName) {
+                    name = newName;
+                };
+                this.getName = function(){
+                    return name;
+                };
+                this.setId = function(newId){
+                    if(checkId(newId)){
+                        id = newId;
+                    }else {
+                        throw new Error("id格式不正确");
+                    } 
+                };
+                this.getId = function(){
+                    return id;
+                }
+                //公有属性
+                this.price = newPrice;
+                //公有方法
+                this.copy = function(){};
+                //构造器
+                this.setId(newId);
+                this.setName(newName);
+                //初始化
+                bookNum++;
+                if(bookNum > 100){
+                    throw new Error("我们只出售100本书");
+                }
+            }
+            //构建原型
+            _book.prototype = {
+                //公共静态属性
+                isJSBook : false,
+                //公共静态方法
+                display : function(){
+                    return "ID:" + this.getId() + " name:" + this.getName() + " price:" + this.price; 
+                }
+            }
+            //返回类
+            return _book;
+        })();
+
+        var book1 = new Book("A0000001", "第一本", 100.24);
+        console.log(book1);
+        console.log(book1.display());
+        console.log(book1 instanceof Book);//true
+        console.log(book1.bookNum);//undefined 对象无法访问到静态私有变量
+
+        
+
+    </script>-->
+<script>
+// 模块模式
+
+        
+var foo = (function (id) {
+    function change() {
+        //修改公共API
+        publicAPI.identify = identify2;
+    }
+    
+    function identify1() {
+        console.log(id);
+    }
+
+    function identify2() {
+        console.log(id.toUpperCase);
+    }
+
+    var publicAPI = {
+        change: change,
+        identify: identify1
+    };
+            
+    return publicAPI;
+})("foo module");
+foo.identify(); //foo module
+foo.change();
+foo.identify(); //FOO MODULE 
+// 同步模块模式
+
+
+var Modules = (function() {
+    // 利用闭包隐匿模块，禁止外部直接获取
+    var modules = {};
+
+    // 创建模块
+    function define(str, fn) {
+        // 解析模块路由
+        var parts = str.split('.'),
+            // old为当前模块的祖父模块，parent为当前模块的父模块，初始化为modules
+            old = parent = modules,
+            // i 模块层级，len模块层级长度
+            i = len = 0;
+        // 如果第一个模块是模块管理器，则移除
+        if(parts[0] === 'Modules') {
+            parts = parts.slice(1);
+        }
+        // 屏蔽对 define 和 module 模块方法的重写
+        if(parts[0] === 'define' || parts[0] === 'module') {
+            return ;
+        }
+        // 遍历路由模块并定义每层模块
+        for (len = parts.length; i < len; i++) {
+            // 如果父模块中不存在当前模块
+            if(typeof parent[parts[i]] === 'undefined') {
+                // 定义该模块
+                parent[parts[i]] = {};
+            }
+            // 缓存下一级的祖父模块
+            old = parent;
+            // 缓存下一级的父模块
+            parent = parent[parts[i]];
+        }
+        if(fn){
+            old[parts[--i]] = fn();
+        }
+        console.log(modules);
+    }
+
+    // 调用模块
+    function module() {
+        // 将arguments对象转化为数组
+        var args = [].slice.call(arguments),
+            // 获取回调执行函数
+            fn = args.pop(),
+            // 获取依赖模块，如果args[0]是数组则为args[0]，否则依赖模块就是args
+            parts = args[0] && args[0] instanceof Array ? args[0] : args,
+            // 依赖模块列表
+            moduleArray = [],
+            // 模块路由
+            modIDs = '',
+            // 父模块
+            parent;
+        for (var i = 0; i < parts.length; i++) {
+            // 如果是模块路由
+            if(typeof parts[i] === "string") {
+                // 设置父模块
+                parent = modules;
+                modIDs = parts[i].split('.');
+                // 遍历模块路由层级
+                for (var j = 0; j < modIDs.length; j++) {
+                    parent = parent[modIDs[j]] || false;
+                }
+                // 将模块添加到依赖列表中
+                moduleArray.push(parent);
+            }else {
+                // 如果是模块对象
+                moduleArray.push(parts[i]);
+            }
+        }
+        // 执行回调执行函数，将依赖模块传入函数参数
+        console.log(moduleArray);
+        fn.apply(null, moduleArray);
+    }
+
+    return {
+        define: define,
+        module: module
+    }
+})();
+
+Modules.define("string", function() {
+    return {
+        trim: function(str) {
+            return str.replace(/^\s+|\s+$/g, '');
+        }
+    }
+});
+
+//console.log(Modules.get('string').trim(" 看前后有空格 "));
+
+
+Modules.define('dom', function() {
+    // 简化获取元素的方法，这里只实现对id元素获取
+    var $ = function(selector) {
+        $.dom = document.getElementById(selector);
+        // 返回构造函数对象
+        return $;
+    };
+
+    $.html = function(html) {
+        // 如果传参数，则设置内容，否则获取内容
+        if(html) {
+            this.dom.innerHTML = html;
+            // 方便链式调用
+            return this;
+        }else{
+            return this.dom.innerHTML;
+        }
+    };
+
+    $.addClass = function(className) {
+        if(this.dom.className.indexOf(className) == -1) {
+            if(this.dom.className === "") {
+                this.dom.className += className;
+            }else {
+                this.dom.className += ' ' + className;
+            }
+        }
+        return this;
+    }
+
+    // 返回构造函数
+    return $;
+});
+
+/*// 获取dom模块
+var $ = Modules.get('dom');
+console.log($('test').html());
+$('test').html("how much you wanna risk?").addClass("ColdPlay");*/
+
+// 第一种调用模块方式
+Modules.module(["dom", document], function($, doc) {
+    // 通过dom模块设置元素属性
+    console.log($('test').html());
+    $('test').html("how much you wanna risk?").addClass("ColdPlay");
+    // 通过document设置body背景色
+    doc.body.style.background = 'red';
+});
+
+// 第二种调用模块方式
+Modules.module("dom", "string.trim", function($, trim) {
+    var html = $('test').html(" 前后有空格 ").html();
+    var str = trim(html);
+    console.log("*" + html + "* *" + str + "*");
+});
+
+</script>
+        
+</body>
+</html>
