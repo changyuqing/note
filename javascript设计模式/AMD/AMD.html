@@ -10,11 +10,49 @@
 <body>
     <div id="demo">点我异步加载模块</div>
     <script>
-        F.module(['js/event', 'js/dom'], function (eventUtil, $) {
-            eventUtil.on('demo', 'click', function () {
-                $('demo').html("success");
-            })
+        define(['js/dom'], function ($) {
+            console.log("main run");
+
+            
+            $('demo').html("success");
+            
         });
+
+        function * helloGenerater() {
+            yield 'hello';
+            console.log((yield 'world'));
+            return 'generter';
+        }
+
+        // for of循环遍历
+        for (var value of helloGenerater()) {
+            console.log(value);
+        }
+
+        var hw = helloGenerater();
+
+        console.log(hw.next());
+        console.log(hw.next());
+        // next参数表示上一个yield语句的返回值
+        console.log(hw.next(34));
+
+
+        function wrapper (generterFunc) {
+            return function (...args) {
+                let generator = generterFunc();
+                generator.next();
+                return generator;
+            }
+        }
+
+        const generator = wrapper(function * () {
+            console.log('fitst input: ', (yield));
+            return 'done';
+        });
+
+        let generatorObject = generator();
+        console.log(generatorObject.next("sdf"));
+
     </script>
 </body>
 </html>

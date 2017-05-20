@@ -1,4 +1,5 @@
-F.module('js/dom', function () {
+define('js/dom', function () {
+    console.log("dom加载完毕");
     var $ = function (selector) {
         $.dom = document.getElementById(selector);
         // 返回构造函数对象
@@ -34,3 +35,4 @@ F.module('js/dom', function () {
     // 返回构造函数
     return $;
 });
+

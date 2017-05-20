@@ -1,4 +1,4 @@
-(function (F) {
+window.define = (function () {
     var moduleCache = {};
 
     function getUrl (moduleName) {
@@ -52,7 +52,7 @@
 
 
 
-    F.module = function (url, modDeps, modCallBack) {
+     function define (url, modDeps, modCallBack) {
         var args = [].slice.call(arguments),
             callback = args.pop(),
             deps = args.length && args[args.length - 1] instanceof Array ? args.pop() : [],
@@ -66,9 +66,11 @@
                 (function (i) {
                     // 增加未加载依赖模块数量统计
                     depsCount++;
-                    loadModule(deps[i], function (mod) {
-                        params[i] = mod;
+                    loadModule(deps[i], function (depExport) {
+                        // 模块加载完毕后的回调，传入模块的接口
+                        params[i] = depExport;
                         if (--depsCount == 0) {
+                            // 所有模块都加载完，并且接口都保存在params
                             setModules(url, params, callback);
                         }
                     });
@@ -80,10 +82,6 @@
         }
     }
 
+    return define;
 
-
-
-
-})((function () {
-    return window.F = {};
-})());
+})();
