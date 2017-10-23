@@ -15,9 +15,9 @@
 在这之前，我们需要引入几个关键的概念：
 
 * 执行环境栈`Execution Context Stack`——ECS
-* 执行环境`Execution Stack`——EC
-* 变量对象`Variable Object`——V0
-* 活动对象`Activation Object`——A0
+* 执行环境`Execution Context `——EC
+* 变量对象`Variable Object`——VO
+* 活动对象`Activation Object`——AO
 * 变量声明提升`Hoisting`
 * 作用域`[[scope]]`
 * 作用域链`Scope Chain`
